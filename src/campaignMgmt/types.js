@@ -1,0 +1,1 @@
+export const CAMPAIGN_UPDATE = 'campaign_update';
