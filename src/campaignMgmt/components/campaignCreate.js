@@ -1,11 +1,28 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {campaignUpdate} from '../actions';
+import {campaignUpdate, campaignCreate} from '../actions';
 import {Card, CardSection, Input, Button} from '../../components/common';
 import {Text, StyleSheet} from 'react-native';
 import {Picker} from '@react-native-community/picker';
 
 class CampaignCreate extends Component {
+
+    onButtonPress() {
+        const {campaignName,
+            campaignDesc,
+            campaignMobile,
+            campaignDiscount,
+            campaignCategory} = this.props;
+
+        this.props.campaignCreate({campaignName,
+            campaignDesc,
+            campaignMobile,
+            campaignDiscount,
+            campaignCategory: campaignCategory || 'Clothing'});
+        
+
+    }
+
     render() {
         return (
             <Card>
@@ -59,7 +76,7 @@ class CampaignCreate extends Component {
                 </CardSection>
 
                 <CardSection> 
-                    <Button>
+                    <Button onPress={this.onButtonPress.bind(this)}>
                         Create
                     </Button>
                 </CardSection>
@@ -74,7 +91,7 @@ const mapStateToProps = (state) => {
     const  {
         campaignName,
         campaignDesc,
-        capaignMobile,
+        campaignMobile,
         campaignDiscount,
         campaignCategory
      } = state.campaignForm;
@@ -82,7 +99,7 @@ const mapStateToProps = (state) => {
      return{        
         campaignName,
         campaignDesc,
-        capaignMobile,
+        campaignMobile,
         campaignDiscount,
         campaignCategory
     };
@@ -96,4 +113,5 @@ const styles = StyleSheet.create({
     }
 });
 
-export default connect(mapStateToProps, {campaignUpdate}) (CampaignCreate);
+export default connect(mapStateToProps, {campaignUpdate, campaignCreate}) 
+    (CampaignCreate);
