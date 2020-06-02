@@ -87,7 +87,7 @@ class CampaignCreate extends Component {
 };
 
 const mapStateToProps = (state) => {
-    console.log("mapStateToProps:", state);
+    //console.log("mapStateToProps:", state);
     const  {
         campaignName,
         campaignDesc,

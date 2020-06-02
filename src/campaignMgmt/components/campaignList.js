@@ -1,20 +1,12 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect, Component} from 'react';
+import { ActivityIndicator } from 'react-native';
+import {connect} from 'react-redux';
 import {SafeAreaView, View, FlatList, StyleSheet, Text } from 'react-native';
+import {campaignCatList} from '../actions';
+import { exp } from 'react-native-reanimated';
+import firestore from '@react-native-firebase/firestore';
 
-const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'First Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: 'Second Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: 'Third Item',
-    },
-  ];
+
 
  function Item({ title }) {
     return (
@@ -24,24 +16,61 @@ const DATA = [
     );
   }
 
-class CampaignList extends Component {
+function CampaignList() {
 
+        console.log("in list comp");
+
+        const [loading, setLoading] = useState(true); // Set loading to true on component mount
+        const [campaigns, setCampaigns] = useState([]); // Initial empty array of campaigns
       
-    render() {
+        useEffect(() => {
+          const subscriber = firestore()
+            .collection('campaigns')
+            .onSnapshot(querySnapshot => {
+                const campaigns = [];
+          
+                querySnapshot.forEach(documentSnapshot => {
+                    campaigns.push({
+                    ...documentSnapshot.data(),
+                    key: documentSnapshot.id,
+                  });
+                });
+          
+                setCampaigns(campaigns);
+                setLoading(false);
+              // see next step
+            });
+      
+          // Unsubscribe from events when no longer in use
+          return () => subscriber();
+        }, []);
+      
+        if (loading) {
+          return <ActivityIndicator />;
+        }
+      
         return (
           <SafeAreaView style={styles.container}>
             <FlatList
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
-                data={DATA}
-                renderItem={({ item }) => <Item title={item.title} />}
+                data={campaigns}
+                renderItem={({ item }) => <Item title={item.name} />}
                 keyExtractor={item => item.id}
             />
           </SafeAreaView>
-        );
-    }
+        ); 
 
 }
+
+// const mapStateToProps = (state) => {
+//     console.log("mapStateToProps camp list:", state);
+//     const  {campaignList} = state.campaignForm;
+//     console.log("mapStateToProps camp list2:", campaignList);
+
+//      return{ campaignList  };
+
+// }
 
 const styles = StyleSheet.create({
     container: {
@@ -58,7 +87,7 @@ const styles = StyleSheet.create({
     },
   });
 
-export default CampaignList;
 
-
+  export default CampaignList;
+//export default connect(mapStateToProps, {campaignCatList}) (CampaignList);
   
