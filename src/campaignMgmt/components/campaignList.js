@@ -1,76 +1,52 @@
 import React, {useState, useEffect, Component} from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Text, View,  ScrollView } from 'react-native';
 import {connect} from 'react-redux';
-import {SafeAreaView, View, FlatList, StyleSheet, Text } from 'react-native';
+import {SafeAreaView, FlatList, StyleSheet } from 'react-native';
 import {campaignCatList} from '../actions';
-import { exp } from 'react-native-reanimated';
-import firestore from '@react-native-firebase/firestore';
+//import CampaignListIem from './campaignListItem';
+import ResultsList from './resultsList.js';
 
 
 
- function Item({ title }) {
-    return (
-      <View style={styles.item}>
-        <Text style={styles.title}>{title}</Text>
-      </View>
-    );
+class CampaignList extends Component {
+  componentWillMount() {
+    console.log("comp WILLLLL MOUNT");
+    this.props.campaignCatList();
+
+  }
+       
+  filterResultsByCategory = (category)=> {
+    return searchResults.filter(filteredResult => {
+        return filteredResult.categoryName === category;
+    })
+
   }
 
-function CampaignList() {
 
-        console.log("in list comp");
-
-        const [loading, setLoading] = useState(true); // Set loading to true on component mount
-        const [campaigns, setCampaigns] = useState([]); // Initial empty array of campaigns
-      
-        useEffect(() => {
-          const subscriber = firestore()
-            .collection('campaigns')
-            .onSnapshot(querySnapshot => {
-                const campaigns = [];
-          
-                querySnapshot.forEach(documentSnapshot => {
-                    campaigns.push({
-                    ...documentSnapshot.data(),
-                    key: documentSnapshot.id,
-                  });
-                });
-          
-                setCampaigns(campaigns);
-                setLoading(false);
-              // see next step
-            });
-      
-          // Unsubscribe from events when no longer in use
-          return () => subscriber();
-        }, []);
-      
-        if (loading) {
-          return <ActivityIndicator />;
-        }
-      
+      render(){
+        console.log("in list comp", this.props.campaignList);
         return (
           <SafeAreaView style={styles.container}>
-            <FlatList
+            {/* <FlatList
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
-                data={campaigns}
-                renderItem={({ item }) => <Item title={item.name} />}
+                data={this.props.campaignList}
+                renderItem={({ item }) => <Item campaign={item.name} />}
                 keyExtractor={item => item.id}
-            />
+            /> */}
+            <ResultsList filteredResults={this.props.campaignList} title="Category 1" />
           </SafeAreaView>
-        ); 
+          // <ScrollView>
 
+          //   <ResultsList filteredResults={this.props.campaignList} title="Category 1" />
+          //   <ResultsList filteredResults={this.props.campaignList} title="Category 2" />
+          //   <ResultsList filteredResults={this.props.campaignList} title="Category 3" />
+          // </ScrollView>
+
+        ); 
+      }
 }
 
-// const mapStateToProps = (state) => {
-//     console.log("mapStateToProps camp list:", state);
-//     const  {campaignList} = state.campaignForm;
-//     console.log("mapStateToProps camp list2:", campaignList);
-
-//      return{ campaignList  };
-
-// }
 
 const styles = StyleSheet.create({
     container: {
@@ -87,7 +63,14 @@ const styles = StyleSheet.create({
     },
   });
 
+const mapStateToProps = (state) => {
+    console.log("mapStateToProps camp list:", state);
+    const  {campaignList} = state.campaignListInfo;
+    console.log("mapStateToProps camp list2:", campaignList);
 
-  export default CampaignList;
-//export default connect(mapStateToProps, {campaignCatList}) (CampaignList);
-  
+     return{ campaignList  };
+
+}
+
+  // export default CampaignList;
+  export default connect(mapStateToProps, {campaignCatList}) (CampaignList);

@@ -24,12 +24,12 @@ export default (state = INITIAL_STATE, action) => {
         case CAMPAIGN_CREATE_FAIL:
             console.log("in CAMPAIGN_CREATE_FAIL:", action.payload)
             return {...state, error: 'Campaign Create Failed'};
-        case CAMPAIGN_LIST_SUCCESS:
-            console.log("in CAMPAIGN_LIST_SUCCESS:", action.payload)
-            return {...state, campaignList:action.payload};
-        case CAMPAIGN_LIST_FAIL:
-            console.log("in CAMPAIGN_LIST_FAIL:", action.payload)
-            return {...state, error: 'Campaign list Failed'};
+        // case CAMPAIGN_LIST_SUCCESS:
+        //     console.log("in CAMPAIGN_LIST_SUCCESS:", action.payload)
+        //     return {...state, campaignList:action.payload};
+        // case CAMPAIGN_LIST_FAIL:
+        //     console.log("in CAMPAIGN_LIST_FAIL:", action.payload)
+        //     return {...state, error: 'Campaign list Failed'};
         default:
             return state;
     }

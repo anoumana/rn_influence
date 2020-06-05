@@ -1,5 +1,5 @@
 
-import firestore from '@react-native-firebase/firestore';
+import firestore, { firebase } from '@react-native-firebase/firestore';
 import {Actions } from 'react-native-router-flux'
 import {CAMPAIGN_UPDATE, CAMPAIGN_CREATE, CAMPAIGN_CREATE_SUCCESS,
     CAMPAIGN_CREATE_FAIL, CAMPAIGN_CAT_LIST, CAMPAIGN_LIST_SUCCESS,
@@ -13,8 +13,10 @@ import {CAMPAIGN_UPDATE, CAMPAIGN_CREATE, CAMPAIGN_CREATE_SUCCESS,
         };
     };
 
-   export  const campaignCatList= ()=>{
+    export  const campaignCatList= ()=>{
         console.log("Campaign Cat List");
+
+        //const {currentUser} = firebase.auth();
 
         return (dispatch) => {
             dispatch({type: CAMPAIGN_CAT_LIST});
@@ -24,30 +26,34 @@ import {CAMPAIGN_UPDATE, CAMPAIGN_CREATE, CAMPAIGN_CREATE_SUCCESS,
                     console.log("Campaign Cat List2", campaignList);
 
                     querySnapshot.forEach(documentSnapshot => {
-                        campaignCatList.push({
+                        campaignList.push({
                         ...documentSnapshot.data(),
                         key: documentSnapshot.id,
                       });
                       console.log("Campaign Cat List3", campaignList);
-
-                    })
-                })
-                .then(data => {
-                    console.log("camp cat list data:", data);
-                    console.log("camp cat list data2:",  campaignList);
-                    // data.forEach(function(doc) {
-                    //     // doc.data() is never undefined for query doc snapshots
-                    //     console.log(doc.id, " => ", doc.data());
-                    // });
-                    dispatch({type: CAMPAIGN_LIST_SUCCESS,
+                      dispatch({type: CAMPAIGN_LIST_SUCCESS,
                         payload: campaignList});
-                    Actions.campaignList();
-                })
-                .catch((error) =>{ 
-                    dispatch({
-                        type: CAMPAIGN_LIST_FAIL
-                    });
+                    })
+                    
+                    //Actions.campaignList();
+
                 });
+                // .then(data => {
+                //     console.log("camp cat list data:", data);
+                //     console.log("camp cat list data2:",  campaignList);
+                //     // data.forEach(function(doc) {
+                //     //     // doc.data() is never undefined for query doc snapshots
+                //     //     console.log(doc.id, " => ", doc.data());
+                //     // });
+                //     dispatch({type: CAMPAIGN_LIST_SUCCESS,
+                //         payload: data});
+                //     Actions.campaignList();
+                // })
+                // .catch((error) =>{ 
+                //     dispatch({
+                //         type: CAMPAIGN_LIST_FAIL
+                //     });
+                // });
         };
     }
         
