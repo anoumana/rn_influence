@@ -1,12 +1,16 @@
 import React from 'react';
-import {View, Image, Text, StyleSheet } from 'react-native';
+import {View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 
-const ResultsDetail = ({ result }) => {
+
+const ResultsDetail = ({  result, onPress }) => {
+    
     return (
-    <View style={styles.containerStyle}>
-        <Text style={styles.nameStyle}> {result.name}</Text>
-        <Text style={styles.nameStyle}> {result.description} </Text>
-    </View>
+        <TouchableOpacity onPress={()=>onPress()}>
+            <View style={styles.containerStyle}>
+                <Text style={styles.nameStyle}> {result.name}</Text>
+                <Text style={styles.nameStyle}> {result.description} </Text>
+            </View>
+        </TouchableOpacity>
     );
 }
 

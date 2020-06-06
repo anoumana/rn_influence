@@ -35,6 +35,8 @@ class CampaignList extends Component {
                 keyExtractor={item => item.id}
             /> */}
             <ResultsList filteredResults={this.props.campaignList} title="Category 1" />
+            <ResultsList filteredResults={this.props.campaignList} title="Category 1" />
+            <ResultsList filteredResults={this.props.campaignList} title="Category 1" />
           </SafeAreaView>
           // <ScrollView>
 
