@@ -3,6 +3,7 @@ import {Scene, Router, Actions } from 'react-native-router-flux';
 import LoginForm from './login/components/LoginForm'
 import CampaignList from './campaignMgmt/components/campaignList';
 import CampaignCreate from './campaignMgmt/components/campaignCreate';
+import CampaignEdit from './campaignMgmt/components/campaignEdit';
 
 const RouterComponent = () => {
     return (
@@ -18,8 +19,10 @@ const RouterComponent = () => {
                     onRight={()=>{Actions.campaignCreate()}}/>
 
                     <Scene key="campaignCreate" component={CampaignCreate}
-                    title="Add a Campaign"  />
+                    title="Add  Campaign"  />
 
+                    <Scene key="campaignEdit" component={CampaignEdit}
+                    title="Edit Campaign"  />
                 </Scene>
             </Scene>
         </Router>

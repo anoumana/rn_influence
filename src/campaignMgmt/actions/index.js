@@ -1,7 +1,7 @@
 
 import firestore, { firebase } from '@react-native-firebase/firestore';
 import {Actions } from 'react-native-router-flux'
-import {CAMPAIGN_UPDATE, CAMPAIGN_CREATE, CAMPAIGN_CREATE_SUCCESS,
+import {CAMPAIGN_EDIT,CAMPAIGN_EDIT_SUCCESS, CAMPAIGN_UPDATE, CAMPAIGN_CREATE, CAMPAIGN_CREATE_SUCCESS,
     CAMPAIGN_CREATE_FAIL, CAMPAIGN_CAT_LIST, CAMPAIGN_LIST_SUCCESS,
     CAMPAIGN_LIST_FAIL} from '../types'
 
@@ -34,26 +34,7 @@ import {CAMPAIGN_UPDATE, CAMPAIGN_CREATE, CAMPAIGN_CREATE_SUCCESS,
                       dispatch({type: CAMPAIGN_LIST_SUCCESS,
                         payload: campaignList});
                     })
-                    
-                    //Actions.campaignList();
-
                 });
-                // .then(data => {
-                //     console.log("camp cat list data:", data);
-                //     console.log("camp cat list data2:",  campaignList);
-                //     // data.forEach(function(doc) {
-                //     //     // doc.data() is never undefined for query doc snapshots
-                //     //     console.log(doc.id, " => ", doc.data());
-                //     // });
-                //     dispatch({type: CAMPAIGN_LIST_SUCCESS,
-                //         payload: data});
-                //     Actions.campaignList();
-                // })
-                // .catch((error) =>{ 
-                //     dispatch({
-                //         type: CAMPAIGN_LIST_FAIL
-                //     });
-                // });
         };
     }
         
@@ -91,3 +72,31 @@ export const campaignCreateSuccess= (dispatch, data) => {
     Actions.campaignList();
 
 }
+
+export const campaignEdit= ( {campaignKey, campaignName, campaignDesc, campaignMobile,
+    campaignDiscount,  campaignCategory} )  => {
+
+        console.log("***camp edit :", campaignKey);
+        console.log("***camp edit2 :", campaignDesc)
+        return (dispatch) => {
+            dispatch({type: CAMPAIGN_EDIT});
+            firestore().collection('campaigns').doc(campaignKey)
+                .update({
+                    name: campaignName,
+                    description: campaignDesc,
+                    categoryName: campaignCategory
+                })
+                .then(data => {
+                    dispatch({type: CAMPAIGN_EDIT_SUCCESS,
+                        payload: data});
+                    
+                    Actions.campaignList();
+                    console.log("campaign Edit Success ");  
+                })
+                
+                .catch((error) =>{ 
+                    console.log("campaign Edit failed : ", error);
+                });
+        }
+};
+

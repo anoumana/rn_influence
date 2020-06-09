@@ -4,11 +4,10 @@ import ResultsDetail from './resultsDetail';
 import {Actions } from 'react-native-router-flux';
 
 
-//const ResultsList = ({title, filteredResults}) => {
-    class ResultsList extends Component  {
+class ResultsList extends Component  {
 
          onCampaignPress =(selectedCampaign) => {
-            Actions.campaignCreate({selectedCampaign: selectedCampaign});
+            Actions.campaignEdit({selectedCampaign: selectedCampaign});
         }
         
     render() {

@@ -66,9 +66,9 @@ const styles = StyleSheet.create({
   });
 
 const mapStateToProps = (state) => {
-    console.log("mapStateToProps camp list:", state);
+//    console.log("mapStateToProps camp list:", state);
     const  {campaignList} = state.campaignListInfo;
-    console.log("mapStateToProps camp list2:", campaignList);
+//    console.log("mapStateToProps camp list2:", campaignList);
 
      return{ campaignList  };
 

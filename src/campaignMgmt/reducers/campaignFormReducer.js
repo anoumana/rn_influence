@@ -1,4 +1,4 @@
-import {CAMPAIGN_UPDATE,  CAMPAIGN_CREATE_SUCCESS,
+import {CAMPAIGN_EDIT_SUCCESS, CAMPAIGN_UPDATE,  CAMPAIGN_CREATE_SUCCESS,
     CAMPAIGN_CREATE_FAIL, CAMPAIGN_LIST_SUCCESS,
     CAMPAIGN_LIST_FAIL} from '../types';
 import { act } from 'react-test-renderer';
@@ -17,9 +17,13 @@ export default (state = INITIAL_STATE, action) => {
     
     switch (action.type) {
         case CAMPAIGN_UPDATE:
+            console.log("in update");
             return {...state, [action.payload.prop]: action.payload.value};
         case CAMPAIGN_CREATE_SUCCESS:
             console.log("in CAMPAIGN_CREATE_SUCCESS:", action.payload)
+            return {...state, ...INITIAL_STATE};
+        case CAMPAIGN_EDIT_SUCCESS:
+            console.log("in CAMPAIGN_EDIT_SUCCESS:", action.payload)
             return {...state, ...INITIAL_STATE};
         case CAMPAIGN_CREATE_FAIL:
             console.log("in CAMPAIGN_CREATE_FAIL:", action.payload)
