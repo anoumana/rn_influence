@@ -2,11 +2,10 @@
 import firestore, { firebase } from '@react-native-firebase/firestore';
 import {Actions } from 'react-native-router-flux'
 import {CAMPAIGN_EDIT,CAMPAIGN_EDIT_SUCCESS, CAMPAIGN_UPDATE, CAMPAIGN_CREATE, CAMPAIGN_CREATE_SUCCESS,
-    CAMPAIGN_CREATE_FAIL, CAMPAIGN_CAT_LIST, CAMPAIGN_LIST_SUCCESS,
-    CAMPAIGN_LIST_FAIL} from '../types'
+     CAMPAIGN_CREATE_FAIL, CAMPAIGN_CAT_LIST, CAMPAIGN_LIST_SUCCESS, CAMPAIGN_LIST_FAIL} from '../types'
 
     export const campaignUpdate = ({prop, value}) =>{
-        console.log("action:", prop, value)
+        console.log("action:************", prop)
         return {
             type: CAMPAIGN_UPDATE,
             payload: {prop, value}
@@ -23,14 +22,14 @@ import {CAMPAIGN_EDIT,CAMPAIGN_EDIT_SUCCESS, CAMPAIGN_UPDATE, CAMPAIGN_CREATE, C
             firestore().collection('campaigns')
                 .onSnapshot(querySnapshot => {
                     const campaignList = [];
-                    console.log("Campaign Cat List2", campaignList);
+//                    console.log("Campaign Cat List2", campaignList);
 
                     querySnapshot.forEach(documentSnapshot => {
                         campaignList.push({
                         ...documentSnapshot.data(),
                         key: documentSnapshot.id,
                       });
-                      console.log("Campaign Cat List3", campaignList);
+//                      console.log("Campaign Cat List3*******", campaignList);
                       dispatch({type: CAMPAIGN_LIST_SUCCESS,
                         payload: campaignList});
                     })
@@ -76,14 +75,15 @@ export const campaignCreateSuccess= (dispatch, data) => {
 export const campaignEdit= ( {campaignKey, campaignName, campaignDesc, campaignMobile,
     campaignDiscount,  campaignCategory} )  => {
 
-        console.log("***camp edit :", campaignKey);
-        console.log("***camp edit2 :", campaignDesc)
+//        console.log("***camp edit :", campaignKey);
+//       console.log("***camp edit2 :", campaignDesc)
         return (dispatch) => {
             dispatch({type: CAMPAIGN_EDIT});
             firestore().collection('campaigns').doc(campaignKey)
                 .update({
                     name: campaignName,
                     description: campaignDesc,
+                    campaignMobile: campaignMobile,
                     categoryName: campaignCategory
                 })
                 .then(data => {
@@ -98,5 +98,21 @@ export const campaignEdit= ( {campaignKey, campaignName, campaignDesc, campaignM
                     console.log("campaign Edit failed : ", error);
                 });
         }
-};
+    }
+export const campaignDelete= ( campaignKey)  => {
+
+        console.log("***camp del :", campaignKey);
+        return () => {
+            firestore().collection('campaigns').doc(campaignKey)
+                .delete()
+                .then(() => {
+                    console.log("campaign del Success ");  
+                    Actions.campaignList();
+                })
+                
+                .catch((error) =>{ 
+                    console.log("campaign Del failed : ", error);
+                });
+        }
+}
 

@@ -1,11 +1,18 @@
 import React, {Component} from 'react';
+import Communications from 'react-native-communications';
 import _ from 'lodash';
 import {connect} from 'react-redux';
-import {campaignUpdate, campaignEdit} from '../actions';
-import {Card, CardSection, Button} from '../../components/common';
+import {campaignUpdate, campaignEdit, campaignDelete} from '../actions';
+import {Card, CardSection, ModalConfirm, Button} from '../../components/common';
 import CampaignForm from './campaignForm';
 
 class CampaignEdit extends Component {
+
+    state ={modalVisible: false};
+
+    setModalVisible = (visible) => {
+        this.setState({ modalVisible: visible });
+      }
 
     componentDidMount() {
         console.log("willmount:", this.props.selectedCampaign);
@@ -21,7 +28,7 @@ class CampaignEdit extends Component {
     onButtonPress() {
         const {campaignName,
             campaignDesc,
-            // campaignMobile,
+            campaignMobile,
             // campaignDiscount,
             campaignCategory, campaignKey} = this.props;
         
@@ -29,11 +36,31 @@ class CampaignEdit extends Component {
 
         this.props.campaignEdit({campaignKey, campaignName,
             campaignDesc,
-            // campaignMobile,
+            campaignMobile,
             // campaignDiscount,
             campaignCategory: campaignCategory || 'Clothing'});
         
 
+    }
+
+    onTextPress() {
+        const {campaignName,
+             campaignMobile,
+            campaignCategory} = this.props;
+        
+        console.log("text press :", campaignMobile);
+        
+        Communications.text(campaignMobile, `My campaign to propagate is ${campaignName} for category: ${campaignCategory}`);
+    }
+
+    onAccept(){
+        console.log("in onAccept", this.props.campaignKey);
+        this.setModalVisible(false);
+        this.props.campaignDelete(this.props.campaignKey);
+    }
+
+    onDecline() {
+        this.setModalVisible(false);
     }
 
     render() {
@@ -45,7 +72,23 @@ class CampaignEdit extends Component {
                         Update
                     </Button>
                 </CardSection>
-
+                <CardSection> 
+                    <Button onPress={this.onTextPress.bind(this)}>
+                        Text
+                    </Button>
+                </CardSection>
+                <CardSection> 
+                    <Button onPress={()=>this.setModalVisible(true)}>
+                        Delete Campaign
+                    </Button>
+                </CardSection>
+                
+                <ModalConfirm 
+                    visible={this.state.modalVisible} 
+                    text='Are you sure you want to delete this?'
+                    onAccept={this.onAccept.bind(this)}
+                    onDecline={this.onDecline.bind(this)}>
+                </ModalConfirm>
             </Card>
         )
     }
@@ -56,7 +99,7 @@ const mapStateToProps = (state) => {
     const  {
         campaignName,
         campaignDesc,
-        // campaignMobile,
+         campaignMobile,
         // campaignDiscount,
         campaignCategory,
         campaignKey
@@ -65,7 +108,7 @@ const mapStateToProps = (state) => {
      return{        
         campaignName,
         campaignDesc,
-        // campaignMobile,
+         campaignMobile,
         // campaignDiscount,
         campaignCategory,
         campaignKey
@@ -74,5 +117,5 @@ const mapStateToProps = (state) => {
 }
 
 
-export default connect(mapStateToProps, {campaignUpdate, campaignEdit}) 
+export default connect(mapStateToProps, {campaignUpdate, campaignEdit, campaignDelete}) 
     (CampaignEdit);

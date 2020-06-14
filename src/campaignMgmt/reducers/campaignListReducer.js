@@ -2,16 +2,26 @@ import {CAMPAIGN_LIST_SUCCESS, CAMPAIGN_LIST_FAIL} from '../types';
 import { act } from 'react-test-renderer';
 
 const INITIAL_STATE= { campaignListInfo: [] };
+const RESET_STATE= { campaignForm: {
+    campaignName: '',
+    campaignDesc: '',
+    capaignMobile: '',
+    categoryName:'',
+    campaignDiscount: '',
+    campaignKey: ''
+
+} };
 
 export default (state = INITIAL_STATE, action) => {
-    console.log("list reducer:", action.payload);
+//    console.log("list reducer:", action.payload);
     
     switch (action.type) {
       case CAMPAIGN_LIST_SUCCESS:
-            console.log("in CAMPAIGN_LIST_SUCCESS:", action.payload)
-            return {...state, campaignList:action.payload};
+            //console.log("in CAMPAIGN_LIST_SUCCESS:", action.payload)
+            console.log("CAMPAIGN_LIST_SUCCESS");
+            return {...state, campaignList:action.payload, ...RESET_STATE   };
         case CAMPAIGN_LIST_FAIL:
-            console.log("in CAMPAIGN_LIST_FAIL:", action.payload)
+//            console.log("in CAMPAIGN_LIST_FAIL:", action.payload)
             return {...state, error: 'Campaign list Failed'};
         default:
             return state;
