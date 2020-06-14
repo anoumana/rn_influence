@@ -2,7 +2,7 @@
 import firestore, { firebase } from '@react-native-firebase/firestore';
 import {Actions } from 'react-native-router-flux'
 import {CAMPAIGN_EDIT,CAMPAIGN_EDIT_SUCCESS, CAMPAIGN_UPDATE, CAMPAIGN_CREATE, CAMPAIGN_CREATE_SUCCESS,
-     CAMPAIGN_CREATE_FAIL, CAMPAIGN_CAT_LIST, CAMPAIGN_LIST_SUCCESS, CAMPAIGN_LIST_FAIL} from '../types'
+     CAMPAIGN_CREATE_FAIL, CAMPAIGN_CAT_LIST, CAMPAIGN_LIST_SUCCESS, CAMPAIGN_CREATE_INIT} from '../types'
 
     export const campaignUpdate = ({prop, value}) =>{
         console.log("action:************", prop)
@@ -37,6 +37,15 @@ import {CAMPAIGN_EDIT,CAMPAIGN_EDIT_SUCCESS, CAMPAIGN_UPDATE, CAMPAIGN_CREATE, C
         };
     }
         
+
+    export const campaignCreateInit = () =>{
+        console.log("campaignCreateInit:************")
+        return {
+            type: CAMPAIGN_CREATE_INIT,
+            payload: {}
+        };
+    };
+
 export const campaignCreate= ( {campaignName, campaignDesc, campaignMobile,
     campaignDiscount,  campaignCategory} )  => {
 

@@ -1,10 +1,15 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {campaignUpdate, campaignCreate} from '../actions';
+import {campaignCreateInit, campaignCreate} from '../actions';
 import {Card, CardSection, Button} from '../../components/common';
 import CampaignForm from './campaignForm';
 
 class CampaignCreate extends Component {
+
+    componentDidMount() {
+        console.log("Create Mound:");
+        this.props.campaignCreateInit();
+    }
 
     onButtonPress() {
         const {campaignName,
@@ -38,7 +43,7 @@ class CampaignCreate extends Component {
 };
 
 const mapStateToProps = (state) => {
-    //console.log("mapStateToProps:", state);
+    console.log("CREATE mapStateToProps:", state);
     const  {
         campaignName,
         campaignDesc,
@@ -58,5 +63,5 @@ const mapStateToProps = (state) => {
 }
 
 
-export default connect(mapStateToProps, {campaignCreate}) 
+export default connect(mapStateToProps, {campaignCreateInit, campaignCreate}) 
     (CampaignCreate);
