@@ -4,6 +4,7 @@ import LoginForm from './login/components/LoginForm'
 import CampaignList from './campaignMgmt/components/campaignList';
 import CampaignCreate from './campaignMgmt/components/campaignCreate';
 import CampaignEdit from './campaignMgmt/components/campaignEdit';
+import CampaignSearch from './campaignMgmt/components/campaignSearch';
 
 const RouterComponent = () => {
     return (
@@ -16,7 +17,12 @@ const RouterComponent = () => {
                 <Scene key="campaign">
                     <Scene key="campaignList" component={CampaignList}
                     title="Campaigns"  rightTitle="Add"  initial
-                    onRight={()=>{Actions.campaignCreate()}}/>
+                    onRight={()=>{Actions.campaignCreate()}}
+                    leftTitle="Search" onLeft={()=>{Actions.campaignSearch()}}
+                    />
+
+                    <Scene key="campaignSearch" component={CampaignSearch}
+                    title="Search for Campaigns"  />
 
                     <Scene key="campaignCreate" component={CampaignCreate}
                     title="Add  Campaign"  />
